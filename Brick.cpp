@@ -5,7 +5,7 @@
 #include "Brick.h"
 Brick::Brick(float x, float y) {
     shape.setSize({ 60.f, 20.f });
-    shape.setFillColor(sf::Color::Red);
+    shape.setFillColor(colors[rand() % colors.size()]);
     shape.setPosition(x, y);
 }
 float Brick::left() {

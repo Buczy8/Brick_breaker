@@ -4,8 +4,10 @@
 
 #include "Ball.h"
 Ball::Ball(float x, float y) {
-    shape.setRadius(10.f);
-    shape.setFillColor(sf::Color::White);
+    if (!mBallTexture.loadFromFile("assets/ball.png")) {
+        throw "Could not load ball.png";
+    }
+    shape.setTexture(mBallTexture);
     shape.setPosition(x, y);
 }
 void Ball::update(){
@@ -25,11 +27,11 @@ float Ball::left() {
     return shape.getPosition().x;
 }
 float Ball::right() {
-    return shape.getPosition().x + shape.getRadius() * 2;
+    return shape.getPosition().x + shape.getGlobalBounds().width;
 }
 float Ball::top() {
     return shape.getPosition().y;
 }
 float Ball::bottom() {
-    return shape.getPosition().y + shape.getRadius() * 2;
+    return shape.getPosition().y + shape.getGlobalBounds().height;
 }

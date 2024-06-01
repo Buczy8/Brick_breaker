@@ -14,9 +14,12 @@ public:
     float right();
     float top();
     float bottom();
+    sf::Sprite shape;
 
+    friend class Game;
+private:
     sf::Vector2f velocity{ 8.f, -8.f };
-    sf::CircleShape shape;
+    sf::Texture mBallTexture;
 };
 
 

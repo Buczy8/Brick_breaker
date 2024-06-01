@@ -2,8 +2,8 @@
 // Created by pawel on 31.05.2024.
 //
 
-const int windowWidth = 800;
-const int windowHeight = 600;
+const int windowWidth = 900;
+const int windowHeight = 900;
 #ifndef BRICK_BREAKER_PADDLE_H
 #define BRICK_BREAKER_PADDLE_H
 #include <SFML/Graphics.hpp>
@@ -11,6 +11,7 @@ const int windowHeight = 600;
 class Paddle
 {
 private:
+    sf::Texture mPaddleTexture;
     sf::Vector2f velocity;
 public:
     Paddle(float x, float y);
@@ -19,8 +20,10 @@ public:
     float right();
     float top();
     float bottom();
-
-    sf::RectangleShape shape;
+    void draw(sf::RenderWindow& window);
+    friend class Game;
+private:
+    sf::Sprite mPaddleSprite;
 };
 
 #endif //BRICK_BREAKER_PADDLE_H

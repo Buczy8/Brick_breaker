@@ -12,6 +12,7 @@ add_executable(brick_breaker main.cpp
         Brick.cpp
         Game.cpp
         Game.h
+        GameState.h
 )
 
 set(SFML_STATIC_LIBRARIES TRUE)

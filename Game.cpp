@@ -4,13 +4,20 @@ Game::Game() : mWindow(sf::VideoMode(windowWidth, windowHeight), "Brick Breaker"
                mPaddle(windowWidth / 2 - 60, windowHeight - 50),
                mBall(windowWidth / 2, windowHeight / 2) {
     mWindow.setFramerateLimit(60);
-
-    for (int iX = 0; iX < 11; ++iX) {
-        for (int iY = 0; iY < 4; ++iY) {
+    if (!mBackgroundTexture.loadFromFile("assets/bg.png")) {
+        throw std::runtime_error("Could not load background image.");
+    }
+    mBackgroundSprite.setTexture(mBackgroundTexture);
+    for (int iX = 0; iX < 12; ++iX) {
+        for (int iY = 0; iY < 10; ++iY) {
             mBricks.emplace_back((iX + 1) * 64, (iY + 2) * 32);
         }
     }
+    mRedBar.setSize(sf::Vector2f(windowWidth, 10)); // Ustaw rozmiar czerwonego paska
+    mRedBar.setFillColor(sf::Color::Red); // Ustaw kolor czerwonego paska
+    mRedBar.setPosition(0, windowHeight - 10);
 }
+
 
 void Game::run() {
     while (mWindow.isOpen()) {
@@ -30,19 +37,25 @@ void Game::processEvents() {
 
 void Game::update() {
     sf::Time deltaTime = mClock.restart();
-
     mBall.update();
     mPaddle.update();
     testCollision();
+    if (mBall.shape.getPosition().x < 0 || mBall.shape.getPosition().x > windowWidth) {
+        mWindow.close();
+    }
 }
 
 void Game::render() {
     mWindow.clear(sf::Color::Black);
-    mWindow.draw(mPaddle.shape);
+    mWindow.draw(mBackgroundSprite);
+    mWindow.draw(mPaddle.mPaddleSprite);
     mWindow.draw(mBall.shape);
     for (auto& brick : mBricks) {
-        mWindow.draw(brick.shape);
+        if (!brick.destroyed) {
+            mWindow.draw(brick.shape);
+        }
     }
+    mWindow.draw(mRedBar);
     mWindow.display();
 }
 template <class T1, class T2>
@@ -54,7 +67,7 @@ bool Game::isIntersecting(T1& mA, T2& mB) {
 void Game::testCollision() {
     if (isIntersecting(mPaddle, mBall)) {
         mBall.velocity.y = -mBall.velocity.y;
-        if (mBall.shape.getPosition().x < mPaddle.shape.getPosition().x)
+        if (mBall.shape.getPosition().x < mPaddle.mPaddleSprite.getPosition().x)
             mBall.velocity.x = -8.f;
         else
             mBall.velocity.x = 8.f;

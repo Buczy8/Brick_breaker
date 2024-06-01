@@ -4,12 +4,14 @@
 
 #include "Paddle.h"
 Paddle::Paddle(float x, float y) {
-    shape.setSize({ 120.f, 20.f });
-    shape.setFillColor(sf::Color::Green);
-    shape.setPosition(x, y);
+    if (!mPaddleTexture.loadFromFile("assets/paddle.png")) {
+        throw "Could not load paddle.png";
+    }
+    mPaddleSprite.setTexture(mPaddleTexture);
+    mPaddleSprite.setPosition(x, y);
 }
 void Paddle:: update() {
-    shape.move(velocity);
+    mPaddleSprite.move(velocity);
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left) && left() > 0)
         velocity.x = -10.f;
@@ -20,17 +22,20 @@ void Paddle:: update() {
 }
 
 float Paddle::left(){
-    return shape.getPosition().x;
+    return mPaddleSprite.getPosition().x;
 }
 
 float Paddle::right() {
-    return shape.getPosition().x + shape.getSize().x;
+    return mPaddleSprite.getPosition().x + mPaddleSprite.getGlobalBounds().width;
 }
 
 float Paddle::top() {
-    return shape.getPosition().y;
+    return mPaddleSprite.getPosition().y;
 }
 
 float Paddle::bottom() {
-    return shape.getPosition().y + shape.getSize().y;
+    return mPaddleSprite.getPosition().y + mPaddleSprite.getGlobalBounds().height;
+}
+void Paddle::draw(sf::RenderWindow& window) {
+    window.draw(mPaddleSprite);
 }
