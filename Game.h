@@ -69,6 +69,9 @@ private:
     sf::Texture mWinTexture;
     sf::Sprite mWinSprite;
 
+    sf::Music mBackgroundMusic;
+    sf::Music mGameOverSound;
+    sf::Music mWinSound;
 
 };
 

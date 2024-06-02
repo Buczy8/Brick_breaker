@@ -4,6 +4,8 @@ Game::Game() : mWindow(sf::VideoMode(windowWidth, windowHeight), "Brick Breaker"
                 mPaddle(windowWidth / 2 - 60, windowHeight - 50),
                mBall(windowWidth / 2, windowHeight / 2), m_state(Loading){
 
+    //mWindow.setActive(true);
+    //mWindow.setFramerateLimit(60);
     if (!mBackgroundTexture.loadFromFile("assets/bg.png")) {
         throw std::runtime_error("Could not load background image.");
     }
@@ -25,7 +27,7 @@ Game::Game() : mWindow(sf::VideoMode(windowWidth, windowHeight), "Brick Breaker"
         throw std::runtime_error("Could not load game over image.");
     }
     mGameOverSprite.setTexture(mGameOverTexture);
-    mGameOverSprite.setPosition(windowWidth / 2 - mGameOverSprite.getGlobalBounds().width / 2, windowHeight / 2 - 150);
+    mGameOverSprite.setPosition(windowWidth / 2 - mGameOverSprite.getGlobalBounds().width / 2 , windowHeight / 2 - 300);
 
     if (!mPlayAgainButtonTexture.loadFromFile("assets/playbutton.png")) {
         throw std::runtime_error("Could not load play button image.");
@@ -50,6 +52,18 @@ Game::Game() : mWindow(sf::VideoMode(windowWidth, windowHeight), "Brick Breaker"
     }
     mPlayButtonSprite.setTexture(mPlayButtonTexture);
     mPlayButtonSprite.setPosition(windowWidth / 2 - 50, windowHeight / 2 - 50);
+
+    if(!mBackgroundMusic.openFromFile("assets/sounds/bgmusic.wav")){
+        throw std::runtime_error("Could not load background music.");
+    }
+    mBackgroundMusic.setLoop(true);
+    mBackgroundMusic.play();
+    if(!mGameOverSound.openFromFile("assets/sounds/gameover.mp3")){
+        throw std::runtime_error("Could not load game over sound.");
+    }
+    if(!mWinSound.openFromFile("assets/sounds/win.wav")){
+        throw std::runtime_error("Could not load win sound.");
+    }
 }
 
 void Game::loadMenu() {
@@ -100,27 +114,34 @@ void Game::run() {
                 update();
                 render();
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
-                    m_state = Pause; // Zmień stan gry na Pause, jeśli przycisk spacji został naciśnięty
+                    m_state = Pause;
                 }
                 if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
                     sf::Vector2f pos = mWindow.mapPixelToCoords(sf::Mouse::getPosition(mWindow));
                     if (mPauseButtonSprite.getGlobalBounds().contains(pos)) {
-                        m_state = Pause; // Zmień stan gry na Pause, jeśli przycisk pauzy został naciśnięty
+                        m_state = Pause;
                     }
                 }
                 break;
             case Pause:
+                if(mBackgroundMusic.getStatus() == sf::Music::Playing){
+                    mBackgroundMusic.pause();
+                }
                 mWindow.draw(mBackgroundSprite);
                 mWindow.draw(mPlayButtonSprite);
 
                 if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
                     sf::Vector2f pos = mWindow.mapPixelToCoords(sf::Mouse::getPosition(mWindow));
                     if (mPlayButtonSprite.getGlobalBounds().contains(pos)) {
-                        m_state = Playing; // Zmień stan gry na Playing, jeśli przycisk play został naciśnięty
+                        m_state = Playing;
+                        mBackgroundMusic.play();
                     }
                 }
                 break;
             case GameOver:
+                if(mBackgroundMusic.getStatus() == sf::Music::Playing){
+                    mBackgroundMusic.pause();
+                }
                 mWindow.clear(sf::Color::Black);
                 mWindow.draw(mGameOverSprite);
                 mWindow.draw(mPlayAgainButtonSprite);
@@ -128,14 +149,21 @@ void Game::run() {
                 if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
                     sf::Vector2f pos = mWindow.mapPixelToCoords(sf::Mouse::getPosition(mWindow));
                     if (mPlayAgainButtonSprite.getGlobalBounds().contains(pos)) {
-                        m_state = LevelLoading; // Zmień stan gry na LevelLoading, jeśli przycisk play został naciśnięty
+                        m_state = LevelLoading;
+                        mBackgroundMusic.play();
+                        mGameOverSound.stop();
                     }
                     if (mExitButtonSprite.getGlobalBounds().contains(pos)) {
-                        mWindow.close(); // Zamknij okno, jeśli przycisk exit został naciśnięty
+                        mWindow.close();
+                        mGameOverSound.stop();
                     }
                 }
                 break;
             case Win:
+                if(mBackgroundMusic.getStatus() == sf::Music::Playing){
+                    mBackgroundMusic.stop();
+                }
+
                 mWindow.clear(sf::Color::Black);
                 mWindow.draw(mWinSprite);
                 mWindow.draw(mPlayAgainButtonSprite);
@@ -143,10 +171,12 @@ void Game::run() {
                 if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
                     sf::Vector2f pos = mWindow.mapPixelToCoords(sf::Mouse::getPosition(mWindow));
                     if (mPlayAgainButtonSprite.getGlobalBounds().contains(pos)) {
-                        m_state = LevelLoading; // Zmień stan gry na LevelLoading, jeśli przycisk play został naciśnięty
+                        m_state = LevelLoading;
+                        mBackgroundMusic.play();
+                        mWinSound.stop();
                     }
                     if (mExitButtonSprite.getGlobalBounds().contains(pos)) {
-                        mWindow.close(); // Zamknij okno, jeśli przycisk exit został naciśnięty
+                        mWindow.close();
                     }
                 }
                 break;
@@ -170,10 +200,12 @@ void Game::update() {
     testCollision();
     if (mBall.bottom() > windowHeight) {
         m_state = GameOver;
-
+        mGameOverSound.play();
     }
     if (mBricks.empty()) {
         m_state = Win;
+        mWinSound.play();
+
     }
 }
 
@@ -199,6 +231,7 @@ bool Game::isIntersecting(T1& mA, T2& mB) {
 
 void Game::testCollision() {
     if (isIntersecting(mPaddle, mBall)) {
+        mBall.playHitPaddleSound();
         mBall.shape.setPosition(mBall.shape.getPosition().x, mPaddle.mPaddleSprite.getPosition().y - mBall.shape.getGlobalBounds().height);
         float difference = mBall.shape.getPosition().x - mPaddle.mPaddleSprite.getPosition().x;
         float percentageDifference = difference / (mPaddle.mPaddleSprite.getGlobalBounds().width / 2);
@@ -209,6 +242,7 @@ void Game::testCollision() {
 
     for (auto& brick : mBricks) {
         if (!brick.destroyed && isIntersecting(brick, mBall)) {
+            mBall.playHitBrickSound();
             brick.destroyed = true;
             mBall.velocity.y = -mBall.velocity.y;
         }

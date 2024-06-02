@@ -9,7 +9,12 @@ Ball::Ball(float x, float y) {
     }
     shape.setTexture(mBallTexture);
     shape.setPosition(x, y);
-
+    if(!mBallHitPaddleSound.openFromFile("assets/sounds/ballhitpaddle.mp3")){
+        throw "Could not load ballhitpaddle.wav";
+    }
+    if(!mBallHitBrickSound.openFromFile("assets/sounds/ballhitbrick.wav")){
+        throw "Could not load ballhitbrick.wav";
+    }
 }
 void Ball::update(){
     shape.move(velocity);
@@ -35,4 +40,10 @@ float Ball::top() {
 }
 float Ball::bottom() {
     return shape.getPosition().y + shape.getGlobalBounds().height;
+}
+void Ball::playHitPaddleSound(){
+    mBallHitPaddleSound.play();
+}
+void Ball::playHitBrickSound(){
+    mBallHitBrickSound.play();
 }
