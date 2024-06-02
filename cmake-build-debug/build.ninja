@@ -53,7 +53,7 @@ build CMakeFiles/brick_breaker.dir/main.cpp.obj: CXX_COMPILER__brick_breaker_uns
   DEFINES = -DSFML_STATIC
   DEP_FILE = CMakeFiles\brick_breaker.dir\main.cpp.obj.d
   FLAGS = -g -fdiagnostics-color=always
-  INCLUDES = -ID:/SFML/include -isystem C:/SFML/include
+  INCLUDES = -isystem C:/SFML/include
   OBJECT_DIR = CMakeFiles\brick_breaker.dir
   OBJECT_FILE_DIR = CMakeFiles\brick_breaker.dir
 
@@ -61,7 +61,7 @@ build CMakeFiles/brick_breaker.dir/Paddle.cpp.obj: CXX_COMPILER__brick_breaker_u
   DEFINES = -DSFML_STATIC
   DEP_FILE = CMakeFiles\brick_breaker.dir\Paddle.cpp.obj.d
   FLAGS = -g -fdiagnostics-color=always
-  INCLUDES = -ID:/SFML/include -isystem C:/SFML/include
+  INCLUDES = -isystem C:/SFML/include
   OBJECT_DIR = CMakeFiles\brick_breaker.dir
   OBJECT_FILE_DIR = CMakeFiles\brick_breaker.dir
 
@@ -69,7 +69,7 @@ build CMakeFiles/brick_breaker.dir/Ball.cpp.obj: CXX_COMPILER__brick_breaker_uns
   DEFINES = -DSFML_STATIC
   DEP_FILE = CMakeFiles\brick_breaker.dir\Ball.cpp.obj.d
   FLAGS = -g -fdiagnostics-color=always
-  INCLUDES = -ID:/SFML/include -isystem C:/SFML/include
+  INCLUDES = -isystem C:/SFML/include
   OBJECT_DIR = CMakeFiles\brick_breaker.dir
   OBJECT_FILE_DIR = CMakeFiles\brick_breaker.dir
 
@@ -77,7 +77,7 @@ build CMakeFiles/brick_breaker.dir/Brick.cpp.obj: CXX_COMPILER__brick_breaker_un
   DEFINES = -DSFML_STATIC
   DEP_FILE = CMakeFiles\brick_breaker.dir\Brick.cpp.obj.d
   FLAGS = -g -fdiagnostics-color=always
-  INCLUDES = -ID:/SFML/include -isystem C:/SFML/include
+  INCLUDES = -isystem C:/SFML/include
   OBJECT_DIR = CMakeFiles\brick_breaker.dir
   OBJECT_FILE_DIR = CMakeFiles\brick_breaker.dir
 
@@ -85,7 +85,7 @@ build CMakeFiles/brick_breaker.dir/Game.cpp.obj: CXX_COMPILER__brick_breaker_uns
   DEFINES = -DSFML_STATIC
   DEP_FILE = CMakeFiles\brick_breaker.dir\Game.cpp.obj.d
   FLAGS = -g -fdiagnostics-color=always
-  INCLUDES = -ID:/SFML/include -isystem C:/SFML/include
+  INCLUDES = -isystem C:/SFML/include
   OBJECT_DIR = CMakeFiles\brick_breaker.dir
   OBJECT_FILE_DIR = CMakeFiles\brick_breaker.dir
 

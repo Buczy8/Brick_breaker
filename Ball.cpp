@@ -9,19 +9,20 @@ Ball::Ball(float x, float y) {
     }
     shape.setTexture(mBallTexture);
     shape.setPosition(x, y);
+
 }
 void Ball::update(){
     shape.move(velocity);
 
     if (left() < 0)
-        velocity.x = 8.f;
+        velocity.x = 0.3f;
     else if (right() > windowWidth)
-        velocity.x = -8.f;
+        velocity.x = -0.3f;
 
     if (top() < 0)
-        velocity.y = 8.f;
+        velocity.y = 0.3f;
     else if (bottom() > windowHeight)
-        velocity.y = -8.f;
+        velocity.y = -0.3f;
 }
 float Ball::left() {
     return shape.getPosition().x;

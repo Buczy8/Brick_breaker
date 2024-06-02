@@ -10,6 +10,9 @@ enum GameState
     MainMenu,
     LevelLoading,
     Playing,
-    Pause
+    Pause,
+    GameOver,
+    Win
+
 };
 #endif //BRICK_BREAKER_GAMESTATE_H

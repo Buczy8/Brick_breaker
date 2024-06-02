@@ -7,8 +7,9 @@ const int windowHeight = 900;
 #ifndef BRICK_BREAKER_PADDLE_H
 #define BRICK_BREAKER_PADDLE_H
 #include <SFML/Graphics.hpp>
+#include "export.h"
 
-class Paddle
+class BRICK_BREAKER_API Paddle
 {
 private:
     sf::Texture mPaddleTexture;

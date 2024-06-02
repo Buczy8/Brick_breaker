@@ -4,9 +4,10 @@
 
 #ifndef BRICK_BREAKER_BALL_H
 #define BRICK_BREAKER_BALL_H
+#include "export.h"
 #include <SFML/Graphics.hpp>
 #include "Paddle.h"
-class Ball {
+class BRICK_BREAKER_API Ball {
 public:
     Ball(float x, float y);
     void update();
@@ -18,8 +19,9 @@ public:
 
     friend class Game;
 private:
-    sf::Vector2f velocity{ 8.f, -8.f };
+    sf::Vector2f velocity{ 0.3f, -0.3f };
     sf::Texture mBallTexture;
+
 };
 
 

@@ -4,9 +4,10 @@
 
 #ifndef BRICK_BREAKER_BRICK_H
 #define BRICK_BREAKER_BRICK_H
+#include "export.h"
 #include <SFML/Graphics.hpp>
 #include <cstdlib>
-class Brick {
+class BRICK_BREAKER_API Brick {
 public:
     Brick(float mX, float mY);
     float left();
