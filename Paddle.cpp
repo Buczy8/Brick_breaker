@@ -14,9 +14,9 @@ void Paddle:: update() {
     mPaddleSprite.move(velocity);
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left) && left() > 0)
-        velocity.x = -0.5f;
+        velocity.x = -9.f;
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right) && right() < windowWidth)
-        velocity.x = 0.5f;
+        velocity.x = 9.f;
     else
         velocity.x = 0.f;
 }

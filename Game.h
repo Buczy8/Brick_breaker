@@ -8,11 +8,11 @@
 
 #include <SFML/Graphics.hpp>
 #include <vector>
-#include "Brick.h"
+#include "bin/Brick.h"
 #include "Ball.h"
 #include "GameState.h"
 
-class BRICK_BREAKER_API Game {
+class Game {
 public:
     Game();
     void run();

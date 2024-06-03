@@ -1,14 +1,12 @@
-//
-// Created by pawel on 31.05.2024.
-//
+
 
 #ifndef BRICK_BREAKER_BALL_H
 #define BRICK_BREAKER_BALL_H
-#include "export.h"
+
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include "Paddle.h"
-class BRICK_BREAKER_API Ball {
+class  Ball {
 public:
     Ball(float x, float y);
     void update();
@@ -19,9 +17,10 @@ public:
     sf::Sprite shape;
     void playHitPaddleSound();
     void playHitBrickSound();
+    void reset();
     friend class Game;
 private:
-    sf::Vector2f velocity{ 0.3f, -0.3f };
+    sf::Vector2f velocity{ 8.f, -8.f };
     sf::Texture mBallTexture;
     sf::Music mBallHitPaddleSound;
     sf::Music mBallHitBrickSound;

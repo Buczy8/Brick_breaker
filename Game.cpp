@@ -5,7 +5,7 @@ Game::Game() : mWindow(sf::VideoMode(windowWidth, windowHeight), "Brick Breaker"
                mBall(windowWidth / 2, windowHeight / 2), m_state(Loading){
 
     //mWindow.setActive(true);
-    //mWindow.setFramerateLimit(60);
+    mWindow.setFramerateLimit(60);
     if (!mBackgroundTexture.loadFromFile("assets/bg.png")) {
         throw std::runtime_error("Could not load background image.");
     }
@@ -77,8 +77,6 @@ void Game::loadMenu() {
     m_buttonSprite.setTexture(m_buttonTexture);
     m_buttonSprite.setPosition(365, 550);
 
-
-
     m_state = MainMenu;
 }
 void Game::run() {
@@ -87,6 +85,7 @@ void Game::run() {
         switch (m_state) {
             case Loading:
                 loadMenu();
+                mBall.reset();
                 std::cout << "Loading" << std::endl;
                 break;
             case MainMenu:
@@ -216,8 +215,8 @@ void Game::render() {
     mWindow.draw(mBall.shape);
     mWindow.draw(mPauseButtonSprite);
     for (auto& brick : mBricks) {
-        if (!brick.destroyed) {
-            mWindow.draw(brick.shape);
+        if (!brick.isDestroyed()) {
+            brick.draw(mWindow);
         }
     }
     mWindow.draw(mRedBar);
@@ -235,20 +234,20 @@ void Game::testCollision() {
         mBall.shape.setPosition(mBall.shape.getPosition().x, mPaddle.mPaddleSprite.getPosition().y - mBall.shape.getGlobalBounds().height);
         float difference = mBall.shape.getPosition().x - mPaddle.mPaddleSprite.getPosition().x;
         float percentageDifference = difference / (mPaddle.mPaddleSprite.getGlobalBounds().width / 2);
-        mBall.velocity.x = percentageDifference * 0.3f;
+        mBall.velocity.x = percentageDifference * 8.f;
         mBall.velocity.y = -mBall.velocity.y;
 
     }
 
     for (auto& brick : mBricks) {
-        if (!brick.destroyed && isIntersecting(brick, mBall)) {
+        if (!brick.isDestroyed() && isIntersecting(brick, mBall)) {
             mBall.playHitBrickSound();
-            brick.destroyed = true;
+            brick.setDestroyed(true);
             mBall.velocity.y = -mBall.velocity.y;
         }
     }
 
-    mBricks.erase(std::remove_if(mBricks.begin(), mBricks.end(), [](const Brick& mBrick) {
-        return mBrick.destroyed;
+    mBricks.erase(std::remove_if(mBricks.begin(), mBricks.end(), [](Brick mBrick) {
+        return mBrick.isDestroyed();
     }), mBricks.end());
 }

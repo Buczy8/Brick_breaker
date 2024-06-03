@@ -20,14 +20,14 @@ void Ball::update(){
     shape.move(velocity);
 
     if (left() < 0)
-        velocity.x = 0.3f;
+        velocity.x = 8.f;
     else if (right() > windowWidth)
-        velocity.x = -0.3f;
+        velocity.x = -8.f;
 
     if (top() < 0)
-        velocity.y = 0.3f;
+        velocity.y = 8.f;
     else if (bottom() > windowHeight)
-        velocity.y = -0.3f;
+        velocity.y = -8.f;
 }
 float Ball::left() {
     return shape.getPosition().x;
@@ -46,4 +46,8 @@ void Ball::playHitPaddleSound(){
 }
 void Ball::playHitBrickSound(){
     mBallHitBrickSound.play();
+}
+void Ball::reset(){
+    shape.setPosition(windowWidth / 2, windowHeight / 2);
+    velocity = {8.f, 8.f};
 }
