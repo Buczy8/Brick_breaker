@@ -8,7 +8,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <vector>
-#include "bin/Brick.h"
+#include "Brick.h"
 #include "Ball.h"
 #include "GameState.h"
 
@@ -35,6 +35,7 @@ private:
     Paddle mPaddle;
 
     Ball mBall;
+    bool mBallIsActive;
 
     std::vector<Brick> mBricks;
 

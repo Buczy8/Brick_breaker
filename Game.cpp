@@ -2,7 +2,8 @@
 #include <iostream>
 Game::Game() : mWindow(sf::VideoMode(windowWidth, windowHeight), "Brick Breaker"),
                 mPaddle(windowWidth / 2 - 60, windowHeight - 50),
-               mBall(windowWidth / 2, windowHeight / 2), m_state(Loading){
+               mBall(windowWidth / 2, windowHeight / 2), m_state(Loading),
+               mBallIsActive(false){
 
     //mWindow.setActive(true);
     mWindow.setFramerateLimit(60);
@@ -33,7 +34,7 @@ Game::Game() : mWindow(sf::VideoMode(windowWidth, windowHeight), "Brick Breaker"
         throw std::runtime_error("Could not load play button image.");
     }
     mPlayAgainButtonSprite.setTexture(mPlayAgainButtonTexture);
-    mPlayAgainButtonSprite.setPosition(windowWidth / 2 - 96 - 35 , windowHeight / 2 + 50);
+    mPlayAgainButtonSprite.setPosition(windowWidth / 2 - 96 - 35 , windowHeight / 2 + 60);
 
     if (!mExitButtonTexture.loadFromFile("assets/exitbutton.png")) {
         throw std::runtime_error("Could not load exit button image.");
@@ -86,6 +87,7 @@ void Game::run() {
             case Loading:
                 loadMenu();
                 mBall.reset();
+                mPaddle.reset();
                 std::cout << "Loading" << std::endl;
                 break;
             case MainMenu:
@@ -101,6 +103,9 @@ void Game::run() {
                 break;
             case LevelLoading:
                 mBricks.clear();
+                mBall.reset();
+                mPaddle.reset();
+                Brick::loadTexture("assets/brick.png");
                 for (int iX = 0; iX < 12; ++iX) {
                     for (int iY = 0; iY < 10; ++iY) {
                         mBricks.emplace_back((iX + 1) * 64, (iY + 2) * 32);
@@ -189,19 +194,27 @@ void Game::processEvents() {
     while (mWindow.pollEvent(event)) {
         if (event.type == sf::Event::Closed)
             mWindow.close();
+        if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Delete)
+            mBricks.clear();
+        if (event.key.code == sf::Keyboard::Left || event.key.code == sf::Keyboard::Right)
+            mBallIsActive = true;
     }
 }
 
 void Game::update() {
     sf::Time deltaTime = mClock.restart();
-    mBall.update();
+    if (mBallIsActive) {
+        mBall.update();
+    }
     mPaddle.update();
     testCollision();
     if (mBall.bottom() > windowHeight) {
+        mBallIsActive = false;
         m_state = GameOver;
         mGameOverSound.play();
     }
     if (mBricks.empty()) {
+        mBallIsActive = false;
         m_state = Win;
         mWinSound.play();
 
@@ -224,8 +237,10 @@ void Game::render() {
 }
 template <class T1, class T2>
 bool Game::isIntersecting(T1& mA, T2& mB) {
-    return mA.right() >= mB.left() && mA.left() <= mB.right() &&
-           mA.bottom() >= mB.top() && mA.top() <= mB.bottom();
+    return !(mA.right() < mB.left() ||
+             mA.left() > mB.right() ||
+             mA.bottom() < mB.top() ||
+             mA.top() > mB.bottom());
 }
 
 void Game::testCollision() {
@@ -236,14 +251,28 @@ void Game::testCollision() {
         float percentageDifference = difference / (mPaddle.mPaddleSprite.getGlobalBounds().width / 2);
         mBall.velocity.x = percentageDifference * 8.f;
         mBall.velocity.y = -mBall.velocity.y;
-
     }
 
     for (auto& brick : mBricks) {
         if (!brick.isDestroyed() && isIntersecting(brick, mBall)) {
             mBall.playHitBrickSound();
             brick.setDestroyed(true);
-            mBall.velocity.y = -mBall.velocity.y;
+
+            float overlapLeft{ mBall.right() - brick.left() };
+            float overlapRight{ brick.right() - mBall.left() };
+            float overlapTop{ mBall.bottom() - brick.top() };
+            float overlapBottom{ brick.bottom() - mBall.top() };
+
+            bool ballFromLeft(abs(overlapLeft) < abs(overlapRight));
+            bool ballFromTop(abs(overlapTop) < abs(overlapBottom));
+
+            float minOverlapX{ ballFromLeft ? overlapLeft : overlapRight };
+            float minOverlapY{ ballFromTop ? overlapTop : overlapBottom };
+
+            if (abs(minOverlapX) < abs(minOverlapY))
+                mBall.velocity.x = ballFromLeft ? -abs(mBall.velocity.x) : abs(mBall.velocity.x);
+            else
+                mBall.velocity.y = ballFromTop ? -abs(mBall.velocity.y) : abs(mBall.velocity.y);
         }
     }
 

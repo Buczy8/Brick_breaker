@@ -12,17 +12,19 @@ add_executable(brick_breaker
         Game.cpp
         Game.h
         GameState.h
+        Brick.cpp
+        Brick.h
 )
 
 set(SFML_STATIC_LIBRARIES TRUE)
-set(SFML_DIR "C:/SFML/lib/cmake/SFML")
+set(SFML_DIR ${CMAKE_SOURCE_DIR}/SFML/lib/cmake/SFML)
 
 find_package(SFML 2.6 COMPONENTS graphics audio window system network REQUIRED)
 
 
 target_link_libraries(brick_breaker sfml-graphics sfml-audio sfml-window sfml-system)
 
-include_directories("C:/SFML/include")
-link_directories("C:/SFML/lib")
+include_directories(${CMAKE_SOURCE_DIR}/SFML/include)
+link_directories(${CMAKE_SOURCE_DIR}/SFML/lib)
 
-target_link_libraries(brick_breaker ${CMAKE_SOURCE_DIR}/cmake-build-debug/libcom.dll)
+#target_link_libraries(brick_breaker ${CMAKE_SOURCE_DIR}/cmake-build-debug/libcom.dll)

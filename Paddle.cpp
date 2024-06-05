@@ -39,3 +39,6 @@ float Paddle::bottom() {
 void Paddle::draw(sf::RenderWindow& window) {
     window.draw(mPaddleSprite);
 }
+void Paddle::reset() {
+    mPaddleSprite.setPosition(windowWidth / 2, windowHeight - 50);
+}

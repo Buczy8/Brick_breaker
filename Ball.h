@@ -14,7 +14,6 @@ public:
     float right();
     float top();
     float bottom();
-    sf::Sprite shape;
     void playHitPaddleSound();
     void playHitBrickSound();
     void reset();
@@ -24,6 +23,7 @@ private:
     sf::Texture mBallTexture;
     sf::Music mBallHitPaddleSound;
     sf::Music mBallHitBrickSound;
+    sf::Sprite shape;
 };
 
 
