@@ -17,7 +17,10 @@ public:
     void playHitPaddleSound();
     void playHitBrickSound();
     void reset();
-    friend class Game;
+    sf::Sprite getBallShape();
+    sf::Vector2f getVelocity();
+    void setVelocity(sf::Vector2f velocity);
+
 private:
     sf::Vector2f velocity{ 8.f, -8.f };
     sf::Texture mBallTexture;

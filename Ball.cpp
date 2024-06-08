@@ -51,3 +51,12 @@ void Ball::reset(){
     shape.setPosition(windowWidth / 2, windowHeight / 2);
     velocity = {8.f, 8.f};
 }
+sf::Sprite Ball::getBallShape(){
+    return shape;
+}
+sf::Vector2f Ball::getVelocity(){
+    return velocity;
+}
+void Ball::setVelocity(sf::Vector2f velocity){
+    this->velocity = velocity;
+}

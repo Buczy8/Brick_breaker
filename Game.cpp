@@ -66,23 +66,9 @@ Game::Game() : mWindow(sf::VideoMode(windowWidth, windowHeight), "Brick Breaker"
         throw std::runtime_error("Could not load win sound.");
     }
 }
-
-void Game::loadMenu() {
-    if (!m_mainMenuTexture.loadFromFile("assets/menubg.jpg")) {
-        throw std::runtime_error("Could not load menu image.");
-    }
-    m_mainMenuSprite.setTexture(m_mainMenuTexture);
-    if (!m_buttonTexture.loadFromFile("assets/menubutton.png")) {
-        throw std::runtime_error("Could not load button image.");
-    }
-    m_buttonSprite.setTexture(m_buttonTexture);
-    m_buttonSprite.setPosition(365, 550);
-
-    m_state = MainMenu;
-}
 void Game::run() {
     while (mWindow.isOpen()) {
-        processEvents();
+        GameEngine::processEvents(mWindow, mBricks, mBallIsActive);
         switch (m_state) {
             case Loading:
                 loadMenu();
@@ -111,12 +97,12 @@ void Game::run() {
                         mBricks.emplace_back((iX + 1) * 64, (iY + 2) * 32);
                     }
                 }
-                render();
+                GameEngine::render(mWindow, mBackgroundSprite, mPaddle, mBall, mPauseButtonSprite, mBricks, mRedBar);
                 m_state = Playing;
                 break;
             case Playing:
                 update();
-                render();
+                GameEngine::render(mWindow, mBackgroundSprite, mPaddle, mBall, mPauseButtonSprite, mBricks, mRedBar);
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
                     m_state = Pause;
                 }
@@ -151,6 +137,7 @@ void Game::run() {
                 mWindow.draw(mPlayAgainButtonSprite);
                 mWindow.draw(mExitButtonSprite);
                 if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+                    ScoreTracker::ballLost();
                     sf::Vector2f pos = mWindow.mapPixelToCoords(sf::Mouse::getPosition(mWindow));
                     if (mPlayAgainButtonSprite.getGlobalBounds().contains(pos)) {
                         m_state = LevelLoading;
@@ -158,6 +145,7 @@ void Game::run() {
                         mGameOverSound.stop();
                     }
                     if (mExitButtonSprite.getGlobalBounds().contains(pos)) {
+                        ScoreTracker::saveToFile("wyniki.txt");
                         mWindow.close();
                         mGameOverSound.stop();
                     }
@@ -173,6 +161,7 @@ void Game::run() {
                 mWindow.draw(mPlayAgainButtonSprite);
                 mWindow.draw(mExitButtonSprite);
                 if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+                    ScoreTracker::gameWon();
                     sf::Vector2f pos = mWindow.mapPixelToCoords(sf::Mouse::getPosition(mWindow));
                     if (mPlayAgainButtonSprite.getGlobalBounds().contains(pos)) {
                         m_state = LevelLoading;
@@ -180,6 +169,7 @@ void Game::run() {
                         mWinSound.stop();
                     }
                     if (mExitButtonSprite.getGlobalBounds().contains(pos)) {
+                        ScoreTracker::saveToFile("wyniki.txt");
                         mWindow.close();
                     }
                 }
@@ -189,16 +179,18 @@ void Game::run() {
     }
 }
 
-void Game::processEvents() {
-    sf::Event event;
-    while (mWindow.pollEvent(event)) {
-        if (event.type == sf::Event::Closed)
-            mWindow.close();
-        if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Delete)
-            mBricks.clear();
-        if (event.key.code == sf::Keyboard::Left || event.key.code == sf::Keyboard::Right)
-            mBallIsActive = true;
+void Game::loadMenu() {
+    if (!m_mainMenuTexture.loadFromFile("assets/menubg.jpg")) {
+        throw std::runtime_error("Could not load menu image.");
     }
+    m_mainMenuSprite.setTexture(m_mainMenuTexture);
+    if (!m_buttonTexture.loadFromFile("assets/menubutton.png")) {
+        throw std::runtime_error("Could not load button image.");
+    }
+    m_buttonSprite.setTexture(m_buttonTexture);
+    m_buttonSprite.setPosition(365, 550);
+
+    m_state = MainMenu;
 }
 
 void Game::update() {
@@ -207,7 +199,7 @@ void Game::update() {
         mBall.update();
     }
     mPaddle.update();
-    testCollision();
+    GameEngine::testCollision(mPaddle, mBall, mBricks);
     if (mBall.bottom() > windowHeight) {
         mBallIsActive = false;
         m_state = GameOver;
@@ -221,62 +213,3 @@ void Game::update() {
     }
 }
 
-void Game::render() {
-    mWindow.clear(sf::Color::Black);
-    mWindow.draw(mBackgroundSprite);
-    mWindow.draw(mPaddle.mPaddleSprite);
-    mWindow.draw(mBall.shape);
-    mWindow.draw(mPauseButtonSprite);
-    for (auto& brick : mBricks) {
-        if (!brick.isDestroyed()) {
-            brick.draw(mWindow);
-        }
-    }
-    mWindow.draw(mRedBar);
-    //mWindow.display();
-}
-template <class T1, class T2>
-bool Game::isIntersecting(T1& mA, T2& mB) {
-    return !(mA.right() < mB.left() ||
-             mA.left() > mB.right() ||
-             mA.bottom() < mB.top() ||
-             mA.top() > mB.bottom());
-}
-
-void Game::testCollision() {
-    if (isIntersecting(mPaddle, mBall)) {
-        mBall.playHitPaddleSound();
-        mBall.shape.setPosition(mBall.shape.getPosition().x, mPaddle.mPaddleSprite.getPosition().y - mBall.shape.getGlobalBounds().height);
-        float difference = mBall.shape.getPosition().x - mPaddle.mPaddleSprite.getPosition().x;
-        float percentageDifference = difference / (mPaddle.mPaddleSprite.getGlobalBounds().width / 2);
-        mBall.velocity.x = percentageDifference * 8.f;
-        mBall.velocity.y = -mBall.velocity.y;
-    }
-
-    for (auto& brick : mBricks) {
-        if (!brick.isDestroyed() && isIntersecting(brick, mBall)) {
-            mBall.playHitBrickSound();
-            brick.setDestroyed(true);
-
-            float overlapLeft{ mBall.right() - brick.left() };
-            float overlapRight{ brick.right() - mBall.left() };
-            float overlapTop{ mBall.bottom() - brick.top() };
-            float overlapBottom{ brick.bottom() - mBall.top() };
-
-            bool ballFromLeft(abs(overlapLeft) < abs(overlapRight));
-            bool ballFromTop(abs(overlapTop) < abs(overlapBottom));
-
-            float minOverlapX{ ballFromLeft ? overlapLeft : overlapRight };
-            float minOverlapY{ ballFromTop ? overlapTop : overlapBottom };
-
-            if (abs(minOverlapX) < abs(minOverlapY))
-                mBall.velocity.x = ballFromLeft ? -abs(mBall.velocity.x) : abs(mBall.velocity.x);
-            else
-                mBall.velocity.y = ballFromTop ? -abs(mBall.velocity.y) : abs(mBall.velocity.y);
-        }
-    }
-
-    mBricks.erase(std::remove_if(mBricks.begin(), mBricks.end(), [](Brick mBrick) {
-        return mBrick.isDestroyed();
-    }), mBricks.end());
-}

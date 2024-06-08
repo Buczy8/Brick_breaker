@@ -8,9 +8,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <vector>
-#include "Brick.h"
-#include "Ball.h"
-#include "GameState.h"
+#include "GameEngine.h"
 
 class Game {
 public:
@@ -19,14 +17,8 @@ public:
     friend class StateMachine;
     
 private:
-    void processEvents();
     void update();
-    void render();
-    void testCollision();
     void loadMenu();
-    template <class T1, class T2> bool isIntersecting(T1& mA, T2& mB);
-
-
 private:
     sf::RenderWindow mWindow;
 

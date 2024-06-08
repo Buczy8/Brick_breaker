@@ -1,0 +1,6 @@
+Data i godzina: 2024-06-08 19:44:43
+Destroyed Bricks: 85
+Ball Bounces: 11
+Lost Balls: 0
+Wins: 0
+

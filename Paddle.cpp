@@ -42,3 +42,6 @@ void Paddle::draw(sf::RenderWindow& window) {
 void Paddle::reset() {
     mPaddleSprite.setPosition(windowWidth / 2, windowHeight - 50);
 }
+sf::Sprite Paddle::getPaddleSprite() {
+    return mPaddleSprite;
+}

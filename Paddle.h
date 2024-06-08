@@ -24,6 +24,7 @@ public:
     float bottom();
     void draw(sf::RenderWindow& window);
     void reset();
+    sf::Sprite getPaddleSprite();
     friend class Game;
 };
 

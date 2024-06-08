@@ -7,13 +7,15 @@ add_executable(brick_breaker
         main.cpp
         Paddle.h
         Paddle.cpp
-        Ball.h
-        Ball.cpp
         Game.cpp
         Game.h
         GameState.h
         Brick.cpp
         Brick.h
+        GameEngine.cpp
+        GameEngine.h
+        Ball.cpp
+        Ball.h
 )
 
 set(SFML_STATIC_LIBRARIES TRUE)
@@ -27,4 +29,7 @@ target_link_libraries(brick_breaker sfml-graphics sfml-audio sfml-window sfml-sy
 include_directories(${CMAKE_SOURCE_DIR}/SFML/include)
 link_directories(${CMAKE_SOURCE_DIR}/SFML/lib)
 
+target_link_libraries(brick_breaker ${CMAKE_SOURCE_DIR}/cmake-build-debug/libScoreTracker.dll)
+
 #target_link_libraries(brick_breaker ${CMAKE_SOURCE_DIR}/cmake-build-debug/libcom.dll)
+#target_link_libraries(brick_breaker ${CMAKE_SOURCE_DIR}/cmake-build-debug/libBall.dll)

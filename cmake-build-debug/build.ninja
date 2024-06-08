@@ -65,14 +65,6 @@ build CMakeFiles/brick_breaker.dir/Paddle.cpp.obj: CXX_COMPILER__brick_breaker_u
   OBJECT_DIR = CMakeFiles\brick_breaker.dir
   OBJECT_FILE_DIR = CMakeFiles\brick_breaker.dir
 
-build CMakeFiles/brick_breaker.dir/Ball.cpp.obj: CXX_COMPILER__brick_breaker_unscanned_Debug C$:/Users/pawel/Desktop/studia/Semestr$ 2/jipp2/brick_breaker/Ball.cpp || cmake_object_order_depends_target_brick_breaker
-  DEFINES = -DSFML_STATIC
-  DEP_FILE = CMakeFiles\brick_breaker.dir\Ball.cpp.obj.d
-  FLAGS = -g -std=gnu++23 -fdiagnostics-color=always
-  INCLUDES = -isystem "C:/Users/pawel/Desktop/studia/Semestr 2/jipp2/brick_breaker/SFML/include"
-  OBJECT_DIR = CMakeFiles\brick_breaker.dir
-  OBJECT_FILE_DIR = CMakeFiles\brick_breaker.dir
-
 build CMakeFiles/brick_breaker.dir/Game.cpp.obj: CXX_COMPILER__brick_breaker_unscanned_Debug C$:/Users/pawel/Desktop/studia/Semestr$ 2/jipp2/brick_breaker/Game.cpp || cmake_object_order_depends_target_brick_breaker
   DEFINES = -DSFML_STATIC
   DEP_FILE = CMakeFiles\brick_breaker.dir\Game.cpp.obj.d
@@ -89,6 +81,22 @@ build CMakeFiles/brick_breaker.dir/Brick.cpp.obj: CXX_COMPILER__brick_breaker_un
   OBJECT_DIR = CMakeFiles\brick_breaker.dir
   OBJECT_FILE_DIR = CMakeFiles\brick_breaker.dir
 
+build CMakeFiles/brick_breaker.dir/GameEngine.cpp.obj: CXX_COMPILER__brick_breaker_unscanned_Debug C$:/Users/pawel/Desktop/studia/Semestr$ 2/jipp2/brick_breaker/GameEngine.cpp || cmake_object_order_depends_target_brick_breaker
+  DEFINES = -DSFML_STATIC
+  DEP_FILE = CMakeFiles\brick_breaker.dir\GameEngine.cpp.obj.d
+  FLAGS = -g -std=gnu++23 -fdiagnostics-color=always
+  INCLUDES = -isystem "C:/Users/pawel/Desktop/studia/Semestr 2/jipp2/brick_breaker/SFML/include"
+  OBJECT_DIR = CMakeFiles\brick_breaker.dir
+  OBJECT_FILE_DIR = CMakeFiles\brick_breaker.dir
+
+build CMakeFiles/brick_breaker.dir/Ball.cpp.obj: CXX_COMPILER__brick_breaker_unscanned_Debug C$:/Users/pawel/Desktop/studia/Semestr$ 2/jipp2/brick_breaker/Ball.cpp || cmake_object_order_depends_target_brick_breaker
+  DEFINES = -DSFML_STATIC
+  DEP_FILE = CMakeFiles\brick_breaker.dir\Ball.cpp.obj.d
+  FLAGS = -g -std=gnu++23 -fdiagnostics-color=always
+  INCLUDES = -isystem "C:/Users/pawel/Desktop/studia/Semestr 2/jipp2/brick_breaker/SFML/include"
+  OBJECT_DIR = CMakeFiles\brick_breaker.dir
+  OBJECT_FILE_DIR = CMakeFiles\brick_breaker.dir
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target brick_breaker
@@ -97,9 +105,9 @@ build CMakeFiles/brick_breaker.dir/Brick.cpp.obj: CXX_COMPILER__brick_breaker_un
 #############################################
 # Link the executable brick_breaker.exe
 
-build brick_breaker.exe: CXX_EXECUTABLE_LINKER__brick_breaker_Debug CMakeFiles/brick_breaker.dir/main.cpp.obj CMakeFiles/brick_breaker.dir/Paddle.cpp.obj CMakeFiles/brick_breaker.dir/Ball.cpp.obj CMakeFiles/brick_breaker.dir/Game.cpp.obj CMakeFiles/brick_breaker.dir/Brick.cpp.obj | C$:/Users/pawel/Desktop/studia/Semestr$ 2/jipp2/brick_breaker/SFML/lib/libsfml-graphics-s-d.a C$:/Users/pawel/Desktop/studia/Semestr$ 2/jipp2/brick_breaker/SFML/lib/libsfml-audio-s-d.a C$:/Users/pawel/Desktop/studia/Semestr$ 2/jipp2/brick_breaker/SFML/lib/libsfml-window-s-d.a C$:/Users/pawel/Desktop/studia/Semestr$ 2/jipp2/brick_breaker/SFML/lib/libsfml-system-s-d.a C$:/SFML/lib/libfreetype.a C$:/SFML/lib/libopenal32.a C$:/SFML/lib/libvorbisfile.a C$:/SFML/lib/libvorbisenc.a C$:/SFML/lib/libvorbis.a C$:/SFML/lib/libogg.a C$:/SFML/lib/libFLAC.a
+build brick_breaker.exe: CXX_EXECUTABLE_LINKER__brick_breaker_Debug CMakeFiles/brick_breaker.dir/main.cpp.obj CMakeFiles/brick_breaker.dir/Paddle.cpp.obj CMakeFiles/brick_breaker.dir/Game.cpp.obj CMakeFiles/brick_breaker.dir/Brick.cpp.obj CMakeFiles/brick_breaker.dir/GameEngine.cpp.obj CMakeFiles/brick_breaker.dir/Ball.cpp.obj | C$:/Users/pawel/Desktop/studia/Semestr$ 2/jipp2/brick_breaker/SFML/lib/libsfml-graphics-s-d.a C$:/Users/pawel/Desktop/studia/Semestr$ 2/jipp2/brick_breaker/SFML/lib/libsfml-audio-s-d.a C$:/Users/pawel/Desktop/studia/Semestr$ 2/jipp2/brick_breaker/SFML/lib/libsfml-window-s-d.a C$:/Users/pawel/Desktop/studia/Semestr$ 2/jipp2/brick_breaker/SFML/lib/libsfml-system-s-d.a libScoreTracker.dll C$:/SFML/lib/libfreetype.a C$:/SFML/lib/libopenal32.a C$:/SFML/lib/libvorbisfile.a C$:/SFML/lib/libvorbisenc.a C$:/SFML/lib/libvorbis.a C$:/SFML/lib/libogg.a C$:/SFML/lib/libFLAC.a
   FLAGS = -g
-  LINK_LIBRARIES = "C:/Users/pawel/Desktop/studia/Semestr 2/jipp2/brick_breaker/SFML/lib/libsfml-graphics-s-d.a"  "C:/Users/pawel/Desktop/studia/Semestr 2/jipp2/brick_breaker/SFML/lib/libsfml-audio-s-d.a"  "C:/Users/pawel/Desktop/studia/Semestr 2/jipp2/brick_breaker/SFML/lib/libsfml-window-s-d.a"  "C:/Users/pawel/Desktop/studia/Semestr 2/jipp2/brick_breaker/SFML/lib/libsfml-system-s-d.a"  -lOpenGL32  -lgdi32  C:/SFML/lib/libfreetype.a  -lwinmm  C:/SFML/lib/libopenal32.a  C:/SFML/lib/libvorbisfile.a  C:/SFML/lib/libvorbisenc.a  C:/SFML/lib/libvorbis.a  C:/SFML/lib/libogg.a  C:/SFML/lib/libFLAC.a  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
+  LINK_LIBRARIES = "C:/Users/pawel/Desktop/studia/Semestr 2/jipp2/brick_breaker/SFML/lib/libsfml-graphics-s-d.a"  "C:/Users/pawel/Desktop/studia/Semestr 2/jipp2/brick_breaker/SFML/lib/libsfml-audio-s-d.a"  "C:/Users/pawel/Desktop/studia/Semestr 2/jipp2/brick_breaker/SFML/lib/libsfml-window-s-d.a"  "C:/Users/pawel/Desktop/studia/Semestr 2/jipp2/brick_breaker/SFML/lib/libsfml-system-s-d.a"  libScoreTracker.dll  -lOpenGL32  -lgdi32  C:/SFML/lib/libfreetype.a  -lwinmm  C:/SFML/lib/libopenal32.a  C:/SFML/lib/libvorbisfile.a  C:/SFML/lib/libvorbisenc.a  C:/SFML/lib/libvorbis.a  C:/SFML/lib/libogg.a  C:/SFML/lib/libFLAC.a  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\brick_breaker.dir
   POST_BUILD = cd .
   PRE_LINK = cd .
