@@ -38,14 +38,23 @@ bool GameEngine::isIntersecting(T1& mA, T2& mB) {
              mA.top() > mB.bottom());
 }
 
-    void GameEngine::testCollisionPaddleBall(Paddle& paddle, Ball& ball) {
+void GameEngine::testCollisionPaddleBall(Paddle& paddle, Ball& ball) {
     if (isIntersecting(paddle, ball)) {
         ScoreTracker::ballBounced();
         ball.playHitPaddleSound();
+
+        // Przesuwa piłkę nad paletkę
         ball.getBallShape().setPosition(ball.getBallShape().getPosition().x, paddle.getPaddleSprite().getPosition().y - ball.getBallShape().getGlobalBounds().height);
+
+        // Wylicza prędkość na podstawie punktu kolizji
         float difference = ball.getBallShape().getPosition().x - paddle.getPaddleSprite().getPosition().x;
         float percentageDifference = difference / (paddle.getPaddleSprite().getGlobalBounds().width / 2);
         ball.setVelocity({ 8.f * percentageDifference, -8.f });
+
+        // Sprawdza czy piłka nie koliduje z paletką
+        if (ball.getVelocity().y > 0) {
+            ball.setVelocity({ ball.getVelocity().x, -ball.getVelocity().y });
+        }
     }
 }
 
@@ -55,30 +64,38 @@ void GameEngine::testCollisionBrickBall(Brick& brick, Ball& ball) {
         ball.playHitBrickSound();
         brick.setDestroyed(true);
 
-        float overlapLeft{ ball.right() - brick.left() };
-        float overlapRight{ brick.right() - ball.left() };
-        float overlapTop{ ball.bottom() - brick.top() };
-        float overlapBottom{ brick.bottom() - ball.top() };
+        // Oblicza nakładania się piłki na cegłę w czterech kierunkach
+        float overlapLeft = ball.right() - brick.left();
+        float overlapRight = brick.right() - ball.left();
+        float overlapTop = ball.bottom() - brick.top();
+        float overlapBottom = brick.bottom() - ball.top();
 
-        bool ballFromLeft(abs(overlapLeft) < abs(overlapRight));
-        bool ballFromTop(abs(overlapTop) < abs(overlapBottom));
+        // Określa z której strony piłka uderzyła cegłę
+        bool ballFromLeft = std::abs(overlapLeft) < std::abs(overlapRight);
+        bool ballFromTop = std::abs(overlapTop) < std::abs(overlapBottom);
 
-        float minOverlapX{ ballFromLeft ? overlapLeft : overlapRight };
-        float minOverlapY{ ballFromTop ? overlapTop : overlapBottom };
+        // Wyznacza minimalne nakładanie się w osi X i Y
+        float minOverlapX = ballFromLeft ? overlapLeft : overlapRight;
+        float minOverlapY = ballFromTop ? overlapTop : overlapBottom;
 
-        if (abs(minOverlapX) < abs(minOverlapY))
-            ball.setVelocity({ ball.getVelocity().x, -ball.getVelocity().y });
-        else
+        // Sprawdza, czy minimalne nakładanie się jest w osi X czy Y
+        if (std::abs(minOverlapX) < std::abs(minOverlapY)) {
+            // Jeśli minimalne nakładanie się jest w osi X, odwraca prędkość w osi X
             ball.setVelocity({ -ball.getVelocity().x, ball.getVelocity().y });
+        } else {
+            // Jeśli minimalne nakładanie się jest w osi Y, odwraca prędkość w osi Y
+            ball.setVelocity({ ball.getVelocity().x, -ball.getVelocity().y });
+        }
     }
 }
+
 
 void GameEngine::testCollision(Paddle& paddle, Ball& ball, std::vector<Brick>& bricks) {
     testCollisionPaddleBall(paddle, ball);
     for (auto& brick : bricks) {
         testCollisionBrickBall(brick, ball);
     }
-    bricks.erase(std::remove_if(bricks.begin(), bricks.end(), [](Brick mBrick) {
+    bricks.erase(std::remove_if(bricks.begin(), bricks.end(), [](Brick& mBrick) {
         return mBrick.isDestroyed();
     }), bricks.end());
 }

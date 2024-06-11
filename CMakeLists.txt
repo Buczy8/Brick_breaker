@@ -30,6 +30,3 @@ include_directories(${CMAKE_SOURCE_DIR}/SFML/include)
 link_directories(${CMAKE_SOURCE_DIR}/SFML/lib)
 
 target_link_libraries(brick_breaker ${CMAKE_SOURCE_DIR}/cmake-build-debug/libScoreTracker.dll)
-
-#target_link_libraries(brick_breaker ${CMAKE_SOURCE_DIR}/cmake-build-debug/libcom.dll)
-#target_link_libraries(brick_breaker ${CMAKE_SOURCE_DIR}/cmake-build-debug/libBall.dll)

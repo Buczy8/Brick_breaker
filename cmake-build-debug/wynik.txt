@@ -1,6 +1,42 @@
-Data i godzina: 2024-06-08 19:44:43
+Data i godzina: 2024-06-11 10:08:19
+Destroyed Bricks: 61
+Ball Bounces: 8
+Lost Balls: 1
+Wins: 0
+
+Data i godzina: 2024-06-11 10:09:50
 Destroyed Bricks: 85
-Ball Bounces: 11
+Ball Bounces: 13
+Lost Balls: 1
+Wins: 0
+
+Data i godzina: 2024-06-11 10:21:11
+Destroyed Bricks: 87
+Ball Bounces: 6
 Lost Balls: 0
+Wins: 0
+
+Data i godzina: 2024-06-11 14:06:09
+Destroyed Bricks: 72
+Ball Bounces: 13
+Lost Balls: 0
+Wins: 0
+
+Data i godzina: 2024-06-11 14:11:10
+Destroyed Bricks: 0
+Ball Bounces: 0
+Lost Balls: 0
+Wins: 0
+
+Data i godzina: 2024-06-11 17:04:30
+Destroyed Bricks: 41
+Ball Bounces: 8
+Lost Balls: 0
+Wins: 0
+
+Data i godzina: 2024-06-11 17:10:21
+Destroyed Bricks: 118
+Ball Bounces: 40
+Lost Balls: 26
 Wins: 0
 

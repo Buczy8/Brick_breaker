@@ -58,5 +58,5 @@ sf::Vector2f Ball::getVelocity(){
     return velocity;
 }
 void Ball::setVelocity(sf::Vector2f velocity){
-    this->velocity = velocity;
+   this->velocity = velocity;
 }

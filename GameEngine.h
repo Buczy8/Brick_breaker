@@ -20,7 +20,6 @@ public:
             static bool isIntersecting(T1& mA, T2& mB);
     static void testCollision(Paddle& paddle, Ball& ball, std::vector<Brick>& bricks);
 
-
     static void testCollisionPaddleBall(Paddle &paddle, Ball &ball);
 
     static void testCollisionBrickBall(Brick &brick, Ball &ball);
@@ -28,14 +27,6 @@ public:
 private:
     sf::Clock mClock;
     bool mBallIsActive;
-
-    static void removeDestroyedBricks(std::vector<Brick> &bricks);
-
-    void adjustBallVelocityAfterBrickCollision(Ball &ball, Brick &brick);
-
-    static void handleBallBrickCollisions(Ball &ball, std::vector<Brick> &bricks);
-
-    static void handlePaddleBallCollision(Paddle &paddle, Ball &ball);
 
 };
 

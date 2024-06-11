@@ -209,7 +209,6 @@ void Game::update() {
         mBallIsActive = false;
         m_state = Win;
         mWinSound.play();
-
     }
 }
 
